@@ -1,0 +1,73 @@
+//less file
+
+@black:#000;
+@white:#FFF;
+@grey:#575757;
+
+.onco-header {
+	background-color:@black;
+}
+
+
+#left-sidebar {
+	width:250px;
+	background-color:@grey;
+	position:fixed;
+	top:50px;
+	height: 100vh;
+	padding-left:5px;
+	padding-right:5px;
+	border-right-width:2px;
+	border-right-color:#000;
+	border-right-style:solid;
+	z-index:99999;
+
+	.panel-heading{
+		background-color:@white!important;
+	}
+ 
+}
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+
+//helper class
+
+.separator {
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.white-color {
+	color:@white;
+}
+/* Gridster styles */
+
+.gridster {
+    width: 960px;
+    margin: 0 auto;
+
+    li {
+    	list-style:none;
+    }
+}
+
+.gridster .gs-w {
+    background: #FFF;
+    cursor: pointer;
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+.gridster .player {
+    -webkit-box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+}
+
+
+.gridster .preview-holder {
+    border: none!important;
+    border-radius: 0!important;
+    background: rgba(255,255,255,.2)!important;
+}
+
+
