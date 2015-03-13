@@ -2,7 +2,7 @@
 
 bioJs.config(function($routeProvider){
 	$routeProvider.when('/',{
-		controller:'ac',
+		controller:'DashboardCtrl',
 		templateUrl:'templates/dash.html'
 	})
 	.when('/v',{

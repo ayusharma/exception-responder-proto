@@ -1,3 +1,28 @@
-<div>
-    
+<div class="row">
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Patient Info</h3>
+          </div>
+          <div class="panel-body" ng-model="patientInfo.patient">
+            <p><b>Age</b>: {{ patientInfo.patient.age }}</p>
+            <p><b>Cancer Type</b>: {{ patientInfo.patient.cancerType }}</p>
+            <p><b>Histological Subtype</b>: {{ patientInfo.patient.histologicalSubtype }}</p>
+            <p><b>Tumor Stage</b>: {{ patientInfo.patient.tumorStage }}</p>
+            <p><b>Tumor Grade</b>: {{ patientInfo.patient.tumorGrade }}</p>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Treatment Timeline</h3>
+          </div>
+          <div class="panel-body" ng-model="patientInfo.patient">
+            <div id="target2" class="timeline-tgt"></div>
+          </div>
+        </div>
+    </div>
 </div>
