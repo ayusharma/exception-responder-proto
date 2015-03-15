@@ -1,11 +1,11 @@
 'use strict';
 
-var bioJs = angular.module('bioJs',['ngRoute','ui.bootstrap']);
+var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar','ngAnimate']);
 
-bioJs.controller('DashboardCtrl',function($scope,$http,D3Service){
+onco.controller('DashboardCtrl',function($scope,$http,D3Service){
   
  
-  $http({method: 'GET', url: 'http://localhost/onco/app/webservice.json'}).success(function(data){
+  $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){
     $scope.patientInfo = data;
 
     //adding events and timeline to sections
@@ -24,11 +24,20 @@ bioJs.controller('DashboardCtrl',function($scope,$http,D3Service){
 );
     }
 
+    $scope.startTimelineDay = events[0].dates[0].toString().substring(8,10);
+    $scope.startTimelineYear = events[0].dates[0].toString().substring(11,15);
+    $scope.startTimelineMonth = new Date(events[0].dates[0].toString().substring(4,7)+'-1-01').getMonth();
+
+    console.log($scope.startTimelineDay);
+    console.log($scope.startTimelineMonth);
+    // $scope.startTimelineMonth = new Date(data.treatmentList[i].startDate.substring(0,4)+'-1-01').getMonth();
+    // $scope.startTimelineYear = data.treatmentList[i].startDate.substring(8,12);
+
     var timeline2 = new Chronoline(document.getElementById("target2"), events,
       {visibleSpan: DAY_IN_MILLISECONDS * 366,
         animated: true,
          tooltips: true,
-         defaultStartDate: new Date(2011, 0, 1),
+         defaultStartDate: new Date($scope.startTimelineYear, $scope.startTimelineMonth-1, $scope.startTimelineDay),
          sections: sections,
          sectionLabelAttrs: {'fill': '#997e3d', 'font-weight': 'bold'},
       labelInterval: isHalfMonth,
@@ -47,11 +56,11 @@ bioJs.controller('DashboardCtrl',function($scope,$http,D3Service){
   });
 
 });
-bioJs.controller('bc',function($scope){
+onco.controller('bc',function($scope){
 
 });
 
-bioJs.controller('DropdownCtrl', function($scope, $log) {
+onco.controller('DropdownCtrl', function($scope, $log) {
 
 
   $scope.status = {

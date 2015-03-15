@@ -1,5 +1,5 @@
 
-bioJs.directive('header', [function(){
+onco.directive('header', [function(){
     var directive = {
         restrict: 'EA',
         templateUrl: 'templates/directives/header.html'
@@ -7,7 +7,7 @@ bioJs.directive('header', [function(){
   return directive;
 }]);
 
-bioJs.directive('lsidebar', [function(){
+onco.directive('lsidebar', [function(){
     var directive = {
         restrict: 'EA',
         templateUrl: 'templates/directives/sidebar.html'

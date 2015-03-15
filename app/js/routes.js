@@ -1,6 +1,6 @@
 
 
-bioJs.config(function($routeProvider){
+onco.config(function($routeProvider){
 	$routeProvider.when('/',{
 		controller:'DashboardCtrl',
 		templateUrl:'templates/dash.html'

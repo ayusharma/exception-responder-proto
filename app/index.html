@@ -5,31 +5,25 @@
 <!--[if gt IE 8]> <html> <![endif]-->
 <!--[if !IE]><!--><html lang="en"><!-- <![endif]-->
 <head>
-	<title>BioJS Dashboard</title>
+	<title>Exceptional Responder Tool</title>
 	<meta charset="UTF-8" />
 	<meta name="description" content="">
 	<meta name="robots" content="index, follow" />
 	<link rel="author" href="" /> 
     <meta name="keywords" content="">
-    <!-- Strat of Facebook Meta -->
-<!--     <meta property="og:title" content=""/>
-    <meta property="og:type" content="" />
-    <meta property="og:image" content="" />
-    <meta property="og:url" content="" />
-    <meta property="og:description" content=""> -->
-    <!-- End of Facebook Meta Tags -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/chronoline.css">
+	<link rel="stylesheet" href="css/loading-bar.css">
 	<link rel="stylesheet/less" href="less/my.less">
 	<link rel="stylesheet" type="text/css" href="css/jquery.qtip.min.css" />
 	<script src="js/less.min.js"></script>
 </head>
-
-<body data-ng-app="bioJs">
+<div class="loading"></div>
+<body data-ng-app="onco">
 	<div class="container-fluid">
 		<div header></div>
 		<div lsidebar></div>
@@ -44,12 +38,15 @@
 	<script type="text/javascript" src="js/chronoline.js"></script>
 	<script type="text/javascript" src="js/angular.min.js"></script>
 	<script type="text/javascript" src="js/angular-route.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-animate.min.js"></script>
+	<script type="text/javascript" src="js/loading-bar.js"></script>
 	<script type="text/javascript" src="js/controllers.js"></script>
 	<script type="text/javascript" src="js/routes.js"></script>
 	<script type="text/javascript" src="js/directive.js"></script>
 	<script type="text/javascript" src="js/service.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/ui-bootstrap-tpls-0.12.1.min.js"></script>
+
 
 
 </html>

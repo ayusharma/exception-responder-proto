@@ -33,8 +33,12 @@
             <h3 class="panel-title">Filter Section</h3>
           </div>
           <div class="panel-body">
-            Select a gene: <select id="gene-selector"></select> <button id="clear" class="btn btn-info">Clear All</button>
+          
+            Select a gene: <select id="gene-selector"></select> <button id="clear" class="btn btn-info">Clear</button>
             <p><b>Result</b>: <span id="gene-selector-result"></span></p>
+            <br>
+            Select a chromosome: <select id="chromosome-selector"></select> <button id="clear-chromosome" class="btn btn-info">Clear</button>
+            <p><b>Muted Genes</b>: <span id="chromosome-selector-result"></span></p>
           </div>
         </div>
     </div>
@@ -45,8 +49,51 @@
           <div class="panel-heading">
             <h3 class="panel-title">Analytic Section</h3>
           </div>
-          <div class="panel-body" id="chart">
-            
+          <div class="panel-body">
+          Show Acording to:
+          <div class="btn-group">
+              <button type="button" class="btn btn-default" id="chromosome-no">Chromosome No.</button>
+              <button type="button" class="btn btn-default" id="gene-symbol">Gene Symbol</button>
+              <button type="button" class="btn btn-default" id="strand">Strand</button>
+              <button type="button" class="btn btn-default" id="reset">Reset All</button>
+          </div>
+          <br><br>
+            <div id="chart"></div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Analytic Result</h3>
+          </div>
+          <div class="panel-body" id="analytic-result">
+              <b>Result:</b>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">How this Works</h3>
+          </div>
+          <div class="panel-body">
+              This prototype hadles the data from <a href="http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle">http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle</a> and make it easy to mine the data. You can see the time line of the patient and explore it's data with relevant sections.
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Find this on Github</h3>
+          </div>
+          <div class="panel-body">
+             <a href="https://github.com/ayusharma/exception-responder-proto">Github</a>
           </div>
         </div>
     </div>
