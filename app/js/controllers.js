@@ -222,7 +222,7 @@ console.log(exprespmod);
   //drawing d3 graphs
   var margin = {top:20,bottom:20,left:20,right:0};
   var w = 550 - margin.left - margin.right;
-  var h = 7600 - margin.top - margin.bottom;
+  var h = 8000 - margin.top - margin.bottom;
 
 
   var svg = d3.select("#patient-graph-section-one").append("svg").style("background","#FFF")
@@ -338,11 +338,11 @@ console.log(exprespmod);
   //responder-chart-1
   //drawing Respond Scale of Exceptional Responder
 
-  function expRespAnalysis(){
+  function expRespAnalysisBar(){
   
-  var margin = {top:20,bottom:20,left:20,right:0};
+  var margin = {top:20,bottom:100,left:60,right:0};
   var w = 8000 - margin.left - margin.right;
-  var h = 400 - margin.top - margin.bottom;
+  var h = 600 - margin.top - margin.bottom;
 
    var yScale = d3.scale.linear()
    .domain([0,d3.max(exrespana,function(d){ console.log(d); return d.value;})])
@@ -371,8 +371,22 @@ console.log(exprespmod);
     yAxisGen.attr("transform","translate("+margin.left+","+margin.top+")");
     yAxisGen.selectAll("path").style({fill:"none",stroke:"#000"});
     yAxisGen.selectAll("line").style({stroke:"#000"});
+
+    d3.select("#responder-chart-1").select("svg").append("g").attr("transform","translate("+(margin.left+20)+","+(h)+")").selectAll("text").data($scope.method.allgene).enter().append("text").attr("id","expinfotextana").text(function(d){ return d;}).attr({
+      "fill":"green",
+      x:-100,
+      y:function(d,i){
+        return i*(w/$scope.method.allgene.length);
+      },
+
+    })
+
   }
-  expRespAnalysis();
+  expRespAnalysisBar();
+
+  function  expRespAnalysisPie() {
+    
+  }
 
 
 })//then brackets
