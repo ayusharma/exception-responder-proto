@@ -1,1 +1,114 @@
-view2
+<div class="row">
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+		  <!-- Default panel contents -->
+		  <div class="panel-heading"><b>Patients Information</b></div>
+		  <div class="panel-body">
+		    <p ng-model="method.datastatus">{{ method.datastatus }}</p>
+		    		    <table class="table">
+		        <thead>
+		          <tr>
+		            <th>Age</th>
+		            <th>Cancer Type</th>
+		            <th>Histological Subtype</th>
+		            <th>Tumor Stage</th>
+                <th>Tumor Grade</th>
+                <th>Survival Chances</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+		          <tr ng-repeat="values in method.patients">
+		            <th scope="row">{{ values.patient.age }}</th>
+		            <td>{{ values.patient.cancerType }}</td>
+		            <td>{{ values.patient.histologicalSubtype }}</td>
+		            <td>{{ values.patient.tumorGrade }}</td>
+                <td>{{ values.patient.tumorStage }}</td>
+                <td><button class="btn btn-info" id="patient-{{ $index }}">Select</button></td>
+		          </tr>
+		        </tbody>
+      		</table>
+		  </div>
+		</div>
+    </div>
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Treatment Timeline</h3>
+          </div>
+          <div class="panel-body">
+            <div id="target2" class="timeline-tgt"></div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Analytics Via D3</h3>
+          </div>
+          <div class="panel-body">
+          <div class="col-md-6" id="patient-graph-section-one" style="overflow-x:scroll !important;"></div>
+          <div class="col-md-6" id="patient-graph-section-two" style="overflow-x:scroll !important;"></div>
+            
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Biopsy Section</h3>
+          </div>
+          <div class="panel-body">
+          Show Acording to:
+          <div class="btn-group">
+              <button type="button" class="btn btn-default" id="chromosome-no">Chromosome No.</button>
+              <button type="button" class="btn btn-default" id="gene-symbol">Gene Symbol</button>
+              <button type="button" class="btn btn-default" id="strand">Strand</button>
+              <button type="button" class="btn btn-default" id="reset">Reset All</button>
+          </div>
+          <br><br>
+            <div id="chart"></div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Analytic Result</h3>
+          </div>
+          <div class="panel-body" id="analytic-result">
+              <b>Result:</b>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">How this Works</h3>
+          </div>
+          <div class="panel-body">
+              This prototype hadles the data from <a href="http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle">http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle</a> and make it easy to mine the data. You can see the time line of the patient and explore it's data with relevant sections.
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Find this on Github</h3>
+          </div>
+          <div class="panel-body">
+             <a href="https://github.com/ayusharma/exception-responder-proto">Github</a>
+          </div>
+        </div>
+    </div>
+</div>
