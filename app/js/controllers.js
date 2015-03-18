@@ -99,9 +99,9 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
 
 
   function timeline(patientData){
-    console.log(patientData);
+    // console.log(patientData);
     for (var i = 0; i < patientData.length; i++) {  
-      console.log(patientData);
+      // console.log(patientData);
       for(var j=0; j< patientData[i].treatmentList.length; j++){
         $scope.startDay = patientData[i].treatmentList[j].startDate.substring(4,6);
         $scope.startMonth = new Date(patientData[i].treatmentList[j].startDate.substring(0,4)+'-1-01').getMonth();
@@ -163,11 +163,11 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
  }
 
 
- console.log($scope.method.genePresent(0));
- console.log($scope.method.genePresent(1));
- console.log($scope.method.genePresent(2));
- console.log($scope.method.genePresent(3));
- console.log($scope.method.genePresent(4));
+ // console.log($scope.method.genePresent(0));
+ // console.log($scope.method.genePresent(1));
+ // console.log($scope.method.genePresent(2));
+ // console.log($scope.method.genePresent(3));
+ // console.log($scope.method.genePresent(4));
   //to get all genes of patients
   $scope.method.allgene = [];
   for (var k = 0; k < $scope.method.patients.length; k++) {
@@ -178,7 +178,7 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
    };
  };
  $scope.method.allgene = $scope.method.unique($scope.method.allgene.sort());
- console.log($scope.method.allgene.length);
+ // console.log($scope.method.allgene.length);
 
   //making data according to genes
   var patientgeneinfo = [];
@@ -197,7 +197,7 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
     }
   }
 }
-console.log(patientgeneinfo[0].gene.length);
+console.log(patientgeneinfo);
 
 //modifying exp resp data
 var exprespmod = [];
@@ -208,8 +208,8 @@ for (var i = 0; i < $scope.method.expresp.length; i++) {
      for (var k = 0; k < $scope.method.expresp[i].genomicProfileList.length; k++) {
        for (var l = 0; l < $scope.method.expresp[i].genomicProfileList[k].mutationList.length; l++) {
         if($scope.method.allgene[j] == $scope.method.expresp[i].genomicProfileList[k].mutationList[l].geneSymbol){
-          patientgeneinfo[i].gene[j].status = "P";
-          patientgeneinfo[i].gene[j].chromosome = $scope.method.expresp[i].genomicProfileList[k].mutationList[l].chromosome;
+          exprespmod[i].gene[j].status = "P";
+          exprespmod[i].gene[j].chromosome = $scope.method.expresp[i].genomicProfileList[k].mutationList[l].chromosome;
 
         }
       }
@@ -220,7 +220,7 @@ console.log(exprespmod);
 
  //$scope.method.patients[k].genomicProfileList[i].mutationList[j].geneSymbol
   //drawing d3 graphs
-  var margin = {top:20,bottom:20,left:20,right:10};
+  var margin = {top:20,bottom:20,left:20,right:0};
   var w = 550 - margin.left - margin.right;
   var h = 7600 - margin.top - margin.bottom;
 
@@ -229,7 +229,7 @@ console.log(exprespmod);
   .attr("width",w + margin.left + margin.right)
   .attr("height",h + margin.top + margin.bottom)
 
-  var svg = d3.select("#patient-graph-section-two").append("svg").style("background","#FFF")
+  var svg = d3.select("#patient-graph-section-two").append("svg").style("background","#F2EADF")
   .attr("width",w + margin.left + margin.right)
   .attr("height",h + margin.top + margin.bottom)
 
@@ -301,7 +301,7 @@ console.log(exprespmod);
 
     //drawing circles
     d3.select("#patient-graph-section-two svg").append("g").attr("transform","translate("+(margin.left+100)+","+(margin.top+100)+")")
-    .selectAll("circle").data(patientgeneinfo[k].gene).enter().append("circle").attr({
+    .selectAll("circle").data(exprespmod[k].gene).enter().append("circle").attr({
       cx:k*100,
       cy:function(d,i){return i*30; },
       r:r,
@@ -314,15 +314,65 @@ console.log(exprespmod);
       }
     })
   }
-
+  //calling visulization functions
   for (var k = 0; k < $scope.method.patients.length; k++) {
     $scope.drawScatterNorm(k);
     $scope.drawScatterExp(k);
   };
 
+  //creating data for expresp analysis according genes
+  
+  var exrespana = [];
+  for (var i = 0; i <  $scope.method.allgene.length; i++) {
+    var count = 0;
+    exrespana.push({gene:null,value:null});
+    for (var j = 0; j < exprespmod.length; j++) {
+       exrespana[i].gene = exprespmod[j].gene[i].gene;
+      if(exprespmod[j].gene[i].status == "P"){
+        count = count+1;
+        exrespana[i].value = (count/exprespmod.length)*100;
+      } 
+    }
+  };
+  console.log(exrespana);
+  //responder-chart-1
+  //drawing Respond Scale of Exceptional Responder
 
+  function expRespAnalysis(){
+  
+  var margin = {top:20,bottom:20,left:20,right:0};
+  var w = 8000 - margin.left - margin.right;
+  var h = 400 - margin.top - margin.bottom;
 
+   var yScale = d3.scale.linear()
+   .domain([0,d3.max(exrespana,function(d){ console.log(d); return d.value;})])
+   .range([0,h]);
+  
+  var svg = d3.select("#responder-chart-1").append("svg").style("background","#FFF")
+  .attr("width",w + margin.left + margin.right)
+  .attr("height",h + margin.top + margin.bottom)
 
+  d3.select("#responder-chart-1 svg").append("g").attr("transform","translate("+(margin.left)+","+(margin.top)+")")
+    .selectAll("rect").data(exrespana).enter().append("rect").attr({
+      x:function(d,i){ return i*(w/exrespana.length)},
+      width: function(d,i){ return w/exrespana.length-2 },
+      y:function(d,i){return h-yScale(d.value); },
+      height:function(d,i){ return yScale(d.value);}
+    }).style("fill","#4E8AD9");
+
+    var yScaleAxis = d3.scale.linear()
+   .domain([0,d3.max(exrespana,function(d){ console.log(d); return d.value;})])
+   .range([h,0]);
+
+    var yAxis = d3.svg.axis().scale(yScaleAxis).orient("left");
+    var yAxisGen = d3.select("#responder-chart-1").select("svg").append("g").attr("class","y-axis");
+    yAxis(yAxisGen);
+
+    yAxisGen.attr("transform","translate("+margin.left+","+margin.top+")");
+    yAxisGen.selectAll("path").style({fill:"none",stroke:"#000"});
+    yAxisGen.selectAll("line").style({stroke:"#000"});
+  }
+  expRespAnalysis();
 
 
 })//then brackets
