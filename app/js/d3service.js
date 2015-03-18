@@ -93,35 +93,6 @@ onco.factory('D3Service', function(){
       .style("background","#FFF");
 
 
-      // var xScale = d3.scale.linear()
-      // .domain([1,50])
-      // .range([1,width]); 
-
-      // var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(48)
-      // var xAxisGen = d3.select("svg").append("g");
-      // xAxis(xAxisGen);
-
-      // xAxisGen.attr("transform","translate("+margin.left+","+(height)+")");
-      // xAxisGen.selectAll("path").style({fill:"none",stroke:"#000"});
-      // xAxisGen.selectAll("line").style({stroke:"#000"});
-      // xAxisGen.selectAll("line").attr("y2",-(height-margin.top));
-      // xAxisGen.selectAll("text").style("font-size","8px");
-
-
-
-      // var yScale = d3.scale.linear()
-      // .domain([0,data.genomicProfileList.length])
-      // .range([height,0]); 
-
-      // var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(3)
-      // var yAxisGen = d3.select("svg").append("g");
-      // yAxis(yAxisGen);
-
-      // yAxisGen.attr("transform","translate("+margin.left+","+(margin.top)+")");
-      // yAxisGen.selectAll("path").style({fill:"none",stroke:"#000"});
-      // yAxisGen.selectAll("line").style({stroke:"#000"});
-      // yAxisGen.selectAll("text").style("font-size","8px");
-
       //function to show details in analytic section
       function analyticDetails (obAnalyticDet){
         var panel = '<div class="alert alert-info alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong id="panel-det"></div>'

@@ -1,12 +1,12 @@
 'use strict';
 
-var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar','ngAnimate']);
+var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar','ngAnimate'])
 
-onco.controller('HomeCtrl',function($scope){
-  
+.controller('HomeCtrl',function($scope){
+
 })
 
-onco.controller('DashboardCtrl',function($scope,$http,D3Service,PatientOne){
+.controller('DashboardCtrl',function($scope,$http,D3Service,PatientOne){
 
   PatientOne.then(function(data){
     console.log(data);
@@ -49,11 +49,71 @@ onco.controller('DashboardCtrl',function($scope,$http,D3Service,PatientOne){
 
   })
  
-});
-onco.controller('MultCtrl',function($scope,PatientOne){
+})
+.controller('MultCtrl',function($scope,PatientOne,PatientTwo,PatientThree,PatientFour,PatientFive){
+  $scope.method = {};
+  $scope.method.patients = [];
   PatientOne.then(function(data){
-    console.log(data.patient);
+    $scope.method.patients.push(data);
   })
+  PatientTwo.then(function(data){
+     $scope.method.patients.push(data);
+  })
+  PatientThree.then(function(data){
+     $scope.method.patients.push(data);
+  })
+  PatientFour.then(function(data){
+     $scope.method.patients.push(data);
+     
+  })
+  PatientFive.then(function(data){
+     $scope.method.patients.push(data);
+
+  }).then(function(){
+    console.log($scope.method.patients);
+  var events = []; var sections = [];
+
+  function timeline(patientData){
+    console.log(patientData);
+  for (var i = 0; i < patientData.length; i++) {  
+    console.log(patientData);
+  for(var j=0; j< patientData[i].treatmentList.length; j++){
+    $scope.startDay = patientData[i].treatmentList[j].startDate.substring(4,6);
+    $scope.startMonth = new Date(patientData[i].treatmentList[j].startDate.substring(0,4)+'-1-01').getMonth();
+    $scope.startYear = patientData[i].treatmentList[j].startDate.substring(8,12);
+    $scope.endDay = patientData[i].treatmentList[j].endDate.substring(4,6);
+    $scope.endMonth = new Date(patientData[i].treatmentList[j].endDate.substring(0,4)+'-1-01').getMonth();    
+    $scope.endYear = patientData[i].treatmentList[j].endDate.substring(8,12);
+
+    events.push({dates: [new Date($scope.startYear, $scope.startMonth, $scope.startDay),new Date($scope.endYear, $scope.endMonth, $scope.endDay)], title: "Patient: "+(i+1)+" Treatment "+patientData[i].treatmentList[j].treatmentName, section: j});
+    
+    sections.push({dates: [new Date($scope.startYear, $scope.startMonth, $scope.startDay),new Date($scope.endYear, $scope.endMonth, $scope.endDay)], title:patientData[i].treatmentList[j].treatmentName, section: j, attrs: {fill: "#e3f0fe"}}
+);
+    }
+  }
+    }
+
+    $scope.startTimelineDay = 1;
+    $scope.startTimelineYear = 2010;
+    $scope.startTimelineMonth = 0;
+
+timeline($scope.method.patients);
+var timeline2 = new Chronoline(document.getElementById("target2"), events,
+      {visibleSpan: DAY_IN_MILLISECONDS * 366,
+        animated: true,
+         tooltips: true,
+         defaultStartDate: new Date($scope.startTimelineYear, $scope.startTimelineMonth-1, $scope.startTimelineDay),
+         sections: sections,
+         sectionLabelAttrs: {'fill': '#997e3d', 'font-weight': 'bold'},
+      labelInterval: isHalfMonth,
+      hashInterval: isHalfMonth,
+      scrollLeft: prevQuarter,
+      scrollRight: nextQuarter,
+      floatingSubLabels: false,
+      draggable:true
+      });
+  })
+  
 })
 
 // onco.controller('DropdownCtrl', function($scope, $log) {
