@@ -24,7 +24,7 @@
 		            <td>{{ values.patient.histologicalSubtype }}</td>
 		            <td>{{ values.patient.tumorGrade }}</td>
                 <td>{{ values.patient.tumorStage }}</td>
-                <td ng-model="method.survivalrate"><progressbar animate="false" value="method.survivalrate[$index]" type="success"><b>{{method.survivalrate[$index]}}</b></progressbar></td>
+                <td ng-model="method.survivalrate"><progressbar animate="false" value="method.survivalrate[$index]" type="success"><b>{{method.survivalrate[$index]}}%</b></progressbar></td>
 		          </tr>
 		        </tbody>
       		</table>
@@ -38,7 +38,7 @@
             <h3 class="panel-title">Treatment Timeline</h3>
           </div>
           <div class="panel-body">
-            <div id="target2" class="timeline-tgt"></div>
+            <div id="target3" class="timeline-tgt"></div>
           </div>
         </div>
     </div>
@@ -85,10 +85,10 @@
         <div class="separator"></div>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Analytic Result</h3>
+            <h3 class="panel-title">Advanced Analytic Section(According to entities)</h3>
           </div>
-          <div class="panel-body" id="analytic-result">
-              <b>Result:</b>
+          <div class="panel-body">
+              <single-patient></single-patient>
           </div>
         </div>
     </div>

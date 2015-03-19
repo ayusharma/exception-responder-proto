@@ -14,4 +14,13 @@ onco.directive('lsidebar', [function(){
     }
   return directive;
 }])
+
+onco.directive('singlePatient', [function(){
+    var directive = {
+        restrict: 'EA',
+        templateUrl: 'templates/dashmultiple.html',
+        controller:'DashboardCtrlMul'
+    }
+  return directive;
+}])
     

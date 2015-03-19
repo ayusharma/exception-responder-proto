@@ -1,0 +1,87 @@
+<div class="row" id="biopsy-result">
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Selection</h3>
+          </div>
+          <div class="panel-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default" id="patient-1-ana" ng-click="p1();">Patient 1</button>
+                <button type="button" class="btn btn-default" id="patient-2-ana" ng-click="p2();">Patient 2</button>
+                <button type="button" class="btn btn-default" id="patient-3-ana" ng-click="p3();">Patient 3</button>
+                <button type="button" class="btn btn-default" id="patient-4-ana" ng-click="p4();">Patient 4</button>
+                <button type="button" class="btn btn-default" id="patient-5-ana" ng-click="p5();">Patient 5</button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="separator"></div>
+              <div class="btn-group">
+              <button type="button" class="btn btn-default" id="exp-resp-1-ana" ng-click="expr1()">Ex. Resp. 1</button>
+              <button type="button" class="btn btn-default" id="exp-resp-2-ana" ng-click="expr2()">Ex. Resp. 2</button>
+              <button type="button" class="btn btn-default" id="exp-resp-3-ana" ng-click="expr3()">Ex. Resp. 3</button>
+              <button type="button" class="btn btn-default" id="exp-resp-4-ana" ng-click="expr4()">Ex. Resp. 4</button>
+              <button type="button" class="btn btn-default" id="exp-resp-5-ana" ng-click="expr5()">Ex. Resp. 5</button>
+            </div>
+            </div>
+          </div>
+
+            
+
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Filter Section</h3>
+          </div>
+          <div class="panel-body">
+          
+            Select a gene: <select id="gene-selector"></select> <button id="clear" class="btn btn-info">Clear</button>
+            <p><b>Result</b>: <span id="gene-selector-result"></span></p>
+            <br>
+            Select a chromosome: <select id="chromosome-selector"></select> <button id="clear-chromosome" class="btn btn-info">Clear</button>
+            <p><b>Muted Genes</b>: <span id="chromosome-selector-result"></span></p>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-12" id="biopsy-section">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Biopsy Section</h3>
+          </div>
+          <div class="panel-body">
+          Show Acording to:
+          <div class="btn-group">
+              <button type="button" class="btn btn-default" id="chromosome-no">Chromosome No.</button>
+              <button type="button" class="btn btn-default" id="gene-symbol">Gene Symbol</button>
+              <button type="button" class="btn btn-default" id="strand">Strand</button>
+              <button type="button" class="btn btn-default" id="reset">Reset All</button>
+          </div>
+          <br><br>
+            <div id="chart"></div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="separator"></div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Biopsy Result</h3>
+          </div>
+          <div class="panel-body" id="analytic-result">
+              <b>Result:</b>
+          </div>
+        </div>
+    </div>
+</div>
