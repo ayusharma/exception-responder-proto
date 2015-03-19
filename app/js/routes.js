@@ -2,11 +2,11 @@
 
 onco.config(function($routeProvider){
 	$routeProvider
+	// .when('/',{
+	// 	controller:'HomeCtrl',
+	// 	template:'<h1>Home Page</h1>'
+	// })
 	.when('/',{
-		controller:'HomeCtrl',
-		template:'<h1>Home Page</h1>'
-	})
-	.when('/singlepatient',{
 		controller:'DashboardCtrl',
 		templateUrl:'templates/dash.html'
 	})
