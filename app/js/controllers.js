@@ -8,7 +8,7 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
 
 .controller('DashboardCtrl',function($scope,$http,D3Service,PatientOne){
 
-    PatientOne.then(function(data){
+  PatientOne.then(function(data){
     console.log(data);
     $scope.patientInfo = data;
     //adding events and timeline to sections
@@ -202,19 +202,19 @@ console.log(patientgeneinfo);
 //modifying exp resp data
 var exprespmod = [];
 for (var i = 0; i < $scope.method.expresp.length; i++) {
-    exprespmod.push({patient:i+1,gene:[]});
-    for (var j = 0; j < $scope.method.allgene.length; j++) {
-     exprespmod[i].gene.push({gene:$scope.method.allgene[j],status:"NP",chromosome:""})
-     for (var k = 0; k < $scope.method.expresp[i].genomicProfileList.length; k++) {
-       for (var l = 0; l < $scope.method.expresp[i].genomicProfileList[k].mutationList.length; l++) {
-        if($scope.method.allgene[j] == $scope.method.expresp[i].genomicProfileList[k].mutationList[l].geneSymbol){
-          exprespmod[i].gene[j].status = "P";
-          exprespmod[i].gene[j].chromosome = $scope.method.expresp[i].genomicProfileList[k].mutationList[l].chromosome;
+  exprespmod.push({patient:i+1,gene:[]});
+  for (var j = 0; j < $scope.method.allgene.length; j++) {
+   exprespmod[i].gene.push({gene:$scope.method.allgene[j],status:"NP",chromosome:""})
+   for (var k = 0; k < $scope.method.expresp[i].genomicProfileList.length; k++) {
+     for (var l = 0; l < $scope.method.expresp[i].genomicProfileList[k].mutationList.length; l++) {
+      if($scope.method.allgene[j] == $scope.method.expresp[i].genomicProfileList[k].mutationList[l].geneSymbol){
+        exprespmod[i].gene[j].status = "P";
+        exprespmod[i].gene[j].chromosome = $scope.method.expresp[i].genomicProfileList[k].mutationList[l].chromosome;
 
-        }
       }
     }
   }
+}
 }
 console.log(exprespmod);
 
@@ -285,7 +285,7 @@ console.log(exprespmod);
   }
   // exp responder
 
-     $scope.drawScatterExp = function(k){
+  $scope.drawScatterExp = function(k){
     var r = 12;
     // y axis text 
     d3.select("#patient-graph-section-two svg").append("g").attr("transform","translate("+margin.left+","+(margin.top+104)+")")
@@ -327,32 +327,32 @@ console.log(exprespmod);
     var count = 0;
     exrespana.push({gene:null,value:null});
     for (var j = 0; j < exprespmod.length; j++) {
-       exrespana[i].gene = exprespmod[j].gene[i].gene;
-      if(exprespmod[j].gene[i].status == "P"){
-        count = count+1;
-        exrespana[i].value = (count/exprespmod.length)*100;
-      } 
-    }
-  };
-  console.log(exrespana);
+     exrespana[i].gene = exprespmod[j].gene[i].gene;
+     if(exprespmod[j].gene[i].status == "P"){
+      count = count+1;
+      exrespana[i].value = (count/exprespmod.length)*100;
+    } 
+  }
+};
+console.log(exrespana);
   //responder-chart-1
   //drawing Respond Scale of Exceptional Responder
 
   function expRespAnalysisBar(){
-  
-  var margin = {top:20,bottom:100,left:60,right:0};
-  var w = 8000 - margin.left - margin.right;
-  var h = 600 - margin.top - margin.bottom;
 
-   var yScale = d3.scale.linear()
-   .domain([0,d3.max(exrespana,function(d){ console.log(d); return d.value;})])
-   .range([0,h]);
-  
-  var svg = d3.select("#responder-chart-1").append("svg").style("background","#FFF")
-  .attr("width",w + margin.left + margin.right)
-  .attr("height",h + margin.top + margin.bottom)
+    var margin = {top:20,bottom:100,left:60,right:0};
+    var w = 8000 - margin.left - margin.right;
+    var h = 600 - margin.top - margin.bottom;
 
-  d3.select("#responder-chart-1 svg").append("g").attr("transform","translate("+(margin.left)+","+(margin.top)+")")
+    var yScale = d3.scale.linear()
+    .domain([0,d3.max(exrespana,function(d){ return d.value;})])
+    .range([0,h]);
+
+    var svg = d3.select("#responder-chart-1").append("svg").style("background","#FFF")
+    .attr("width",w + margin.left + margin.right)
+    .attr("height",h + margin.top + margin.bottom)
+
+    d3.select("#responder-chart-1 svg").append("g").attr("id","graph-bar-exp-resp-ana").attr("transform","translate("+(margin.left)+","+(margin.top)+")")
     .selectAll("rect").data(exrespana).enter().append("rect").attr({
       x:function(d,i){ return i*(w/exrespana.length)},
       width: function(d,i){ return w/exrespana.length-2 },
@@ -361,8 +361,8 @@ console.log(exprespmod);
     }).style("fill","#4E8AD9");
 
     var yScaleAxis = d3.scale.linear()
-   .domain([0,d3.max(exrespana,function(d){ console.log(d); return d.value;})])
-   .range([h,0]);
+    .domain([0,d3.max(exrespana,function(d){ return d.value;})])
+    .range([h,0]);
 
     var yAxis = d3.svg.axis().scale(yScaleAxis).orient("left");
     var yAxisGen = d3.select("#responder-chart-1").select("svg").append("g").attr("class","y-axis");
@@ -386,7 +386,7 @@ console.log(exprespmod);
     .y(function(d){ return h-yScale(d.value);})
     .interpolate("linear"); 
 
-    var viz = d3.select("#responder-chart-1").select("svg").append("path").attr("transform","translate("+(margin.left)+","+(margin.top)+")")
+    var viz = d3.select("#responder-chart-1").select("svg").append("path").attr("id","graph-line-exp-resp-ana").attr("transform","translate("+(margin.left)+","+(margin.top)+")")
     .attr({
       d:lineFun(exrespana), 
       "stroke":"purple",
@@ -396,16 +396,83 @@ console.log(exprespmod);
 
   }
   expRespAnalysisBar();
+  //controlling line and bar chart
+  var k = 0;
+  d3.select("#bar-chart").classed("active",true);
+  d3.select("#bar-chart").on("click",function(){
+    if(k==0){
+      d3.select(this).classed("active",false);
+      d3.select("#graph-bar-exp-resp-ana").classed("show-hide",true);
+      k = 1;
+    } else {
+      d3.select(this).classed("active",true);
+      d3.select("#graph-bar-exp-resp-ana").classed("show-hide",false);
+      k = 0;
+    }
+    manageBarLine();
+  })
 
-  function  expRespAnalysisLine() {
-    
+  var m = 0;
+  d3.select("#graph-line-exp-resp-ana").classed("show-hide",true);
+  d3.select("#line-chart").on("click",function(){
+    if(m==0){
+      d3.select(this).classed("active",true);
+      d3.select("#graph-line-exp-resp-ana").classed("show-hide",false);
+      m = 1;
+    } else {
+      d3.select(this).classed("active",false);
+      d3.select("#graph-line-exp-resp-ana").classed("show-hide",true);
+      m = 0;
+    }
+    manageBarLine();
+  })
+
+  function manageBarLine(){
+    if( m == 0 && k == 1){
+      alert("Please select one of the value");
+      d3.select("#bar-chart").classed("active",false);
+      d3.select("#line-chart").classed("active",false);
+    } 
   }
 
-  expRespAnalysisLine();
+//function to get the patient values
+function patientVal(selectedPatient){
+  var patientvalue=0;
+  for (var i = 0; i < $scope.method.genePresent(selectedPatient).length; i++) {
+    for (var j = 0; j < exrespana.length; j++) {
+      if($scope.method.genePresent(selectedPatient)[i] == exrespana[j].gene){
+        var temp = exrespana[j].value;
+        patientvalue = patientvalue+temp;
+      };
+    };
+  }
+  return patientvalue;
+}
+console.log(patientVal(3));
+//function to get the exceptional responder values
+function exprespVal () {
+  var exprespval = 0;
+  for (var i = 0; i < exrespana.length; i++) {
+    var temp = exrespana[i].value;
+    exprespval = exprespval+temp;
+  };
+  return exprespval;
+}
+
+
+//survival rate of patients
+$scope.method.survivalrate = [];
+for (var i = 0; i < $scope.method.patients.length; i++) {
+  var cal = (((patientVal(i)/exprespVal())*100).toFixed(2));
+  $scope.method.survivalrate.push(cal);
+}
+
+//putting progressbar values
+
+
 
 
 })//then brackets
-
 
 
 })
