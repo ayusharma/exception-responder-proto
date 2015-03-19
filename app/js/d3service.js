@@ -82,7 +82,7 @@ onco.factory('D3Service', function(){
      .append("option").attr("value",function(d){return d;}).text(function(d){ return d;})
 
      //tooltip on hover
-      var tooltip = d3.select("body").append("div").attr("class","tooltip")
+      var tooltip = d3.select("body .container-fluid").append("div").attr("class","tooltip")
           .style("position","absolute")
           .style("padding","0 10px")
           .style("background","white")
@@ -106,7 +106,7 @@ onco.factory('D3Service', function(){
       //function to draw bar chart
       function drawBar(k){
         var bar_height = 20;
-        d3.select("svg").append("g").attr("class","bar-rect-"+k).attr("transform","translate("+(margin.left)+","+(k*bar_height+margin.top)+")").selectAll("rect").data(data.genomicProfileList[k].mutationList).enter().append("rect")
+        d3.select("#chart svg").append("g").attr("class","bar-rect-"+k).attr("transform","translate("+(margin.left)+","+(k*bar_height+margin.top)+")").selectAll("rect").data(data.genomicProfileList[k].mutationList).enter().append("rect")
         .on("click",function(d){
           d3.select(this).style("fill","red")
           var obAnalyticDet = {
