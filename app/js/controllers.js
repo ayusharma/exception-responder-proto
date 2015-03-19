@@ -127,12 +127,12 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
      d3.select("#chromosome-selector").selectAll("option").data(chromosomeno).enter()
      .append("option").attr("value",function(d){return d;}).text(function(d){ return d;})
 
-     //tooltip on hover
-     var tooltip = d3.select("body").append("div").attr("class","tooltip")
-     .style("position","absolute")
-     .style("padding","0 10px")
-     .style("background","white")
-     .style("opacity",0);
+     // //tooltip on hover
+     // var tooltip = d3.select("body").append("div").attr("class","tooltip")
+     // .style("position","absolute")
+     // .style("padding","0 10px")
+     // .style("background","white")
+     // .style("opacity",0);
 
      var svg = d3.select("#chart").append("svg").attr("height",height + margin.top + margin.bottom)
      .attr("width",width + margin.left + margin.right)
@@ -595,6 +595,13 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
     });
 
 //d3 section 
+
+  //tooltip on hover
+     var tooltip = d3.select("body").append("div").attr("class","tooltip")
+     .style("position","absolute")
+     .style("padding","0 10px")
+     .style("background","white")
+     .style("opacity",0);
   //function to get present genes in the patient
   $scope.method.unique = function(m){
     var prev = m[0];
@@ -618,12 +625,6 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
    return $scope.method.unique(gene.sort());
  }
 
-
- // console.log($scope.method.genePresent(0));
- // console.log($scope.method.genePresent(1));
- // console.log($scope.method.genePresent(2));
- // console.log($scope.method.genePresent(3));
- // console.log($scope.method.genePresent(4));
   //to get all genes of patients
   $scope.method.allgene = [];
   for (var k = 0; k < $scope.method.patients.length; k++) {
@@ -634,7 +635,6 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
    };
  };
  $scope.method.allgene = $scope.method.unique($scope.method.allgene.sort());
- // console.log($scope.method.allgene.length);
 
   //making data according to genes
   var patientgeneinfo = [];
@@ -653,7 +653,6 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
     }
   }
 }
-console.log(patientgeneinfo);
 
 //modifying exp resp data
 var exprespmod = [];
@@ -672,9 +671,7 @@ for (var i = 0; i < $scope.method.expresp.length; i++) {
   }
 }
 }
-console.log(exprespmod);
 
- //$scope.method.patients[k].genomicProfileList[i].mutationList[j].geneSymbol
   //drawing d3 graphs
   var margin = {top:20,bottom:20,left:20,right:0};
   var w = 550 - margin.left - margin.right;
@@ -728,7 +725,7 @@ console.log(exprespmod);
     d3.select("#patient-graph-section-one svg").append("g").attr("transform","translate("+(margin.left+100)+","+(margin.top+100)+")")
     .selectAll("circle").data(patientgeneinfo[k].gene).enter().append("circle").attr({
       cx:k*100,
-      cy:function(d,i){return i*30; },
+      cy:function(d,i){ console.log(d);return i*30; },
       r:r,
       "fill":function(d){
         if(d.status == "P"){
@@ -738,6 +735,18 @@ console.log(exprespmod);
         }
       }
     })
+    .on("mouseover",function(d){
+            d3.select(this).style("opacity",".8");
+            tooltip.style("opacity","1")
+            // console.log(d)
+            tooltip.html(d.gene)
+            .style("left",(d3.event.pageX)+"px")
+            .style("top",(d3.event.pageY)-15+"px")
+        })
+        .on("mouseout",function(d){
+            d3.select(this).style("opacity","1");
+            tooltip.style("opacity","0")
+        });
   }
   // exp responder
 
@@ -769,6 +778,18 @@ console.log(exprespmod);
         }
       }
     })
+    .on("mouseover",function(d){
+            d3.select(this).style("opacity",".8");
+            tooltip.style("opacity","1")
+            // console.log(d)
+            tooltip.html(d.gene)
+            .style("left",(d3.event.pageX)+"px")
+            .style("top",(d3.event.pageY)-15+"px")
+        })
+        .on("mouseout",function(d){
+            d3.select(this).style("opacity","1");
+            tooltip.style("opacity","0")
+        });
   }
   //calling visulization functions
   for (var k = 0; k < $scope.method.patients.length; k++) {
@@ -790,7 +811,6 @@ console.log(exprespmod);
     } 
   }
 };
-console.log(exrespana);
   //responder-chart-1
   //drawing Respond Scale of Exceptional Responder
 
@@ -814,7 +834,19 @@ console.log(exrespana);
       width: function(d,i){ return w/exrespana.length-2 },
       y:function(d,i){return h-yScale(d.value); },
       height:function(d,i){ return yScale(d.value);}
-    }).style("fill","#4E8AD9");
+    }).style("fill","#4E8AD9")
+    .on("mouseover",function(d){
+            d3.select(this).style("opacity",".8");
+            tooltip.style("opacity","1")
+            // console.log(d)
+            tooltip.html(d.value)
+            .style("left",(d3.event.pageX)+"px")
+            .style("top",(d3.event.pageY)-15+"px")
+        })
+        .on("mouseout",function(d){
+            d3.select(this).style("opacity","1");
+            tooltip.style("opacity","0")
+        });
 
     var yScaleAxis = d3.scale.linear()
     .domain([0,d3.max(exrespana,function(d){ return d.value;})])
