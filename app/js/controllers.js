@@ -596,7 +596,7 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
 //d3 section 
 
   //tooltip on hover
-     var tooltip = d3.select("body").append("div").attr("class","tooltip")
+     var tooltip = d3.select(".container-fluid body").append("div").attr("class","tooltip")
      .style("position","absolute")
      .style("padding","0 10px")
      .style("background","white")
