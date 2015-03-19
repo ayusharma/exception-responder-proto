@@ -24,7 +24,7 @@
 		            <td>{{ values.patient.histologicalSubtype }}</td>
 		            <td>{{ values.patient.tumorGrade }}</td>
                 <td>{{ values.patient.tumorStage }}</td>
-                <td><button class="btn btn-info" id="patient-{{ $index }}">Select</button></td>
+                <td><progressbar animate="false" value="90" type="success"><b>37%</b></progressbar></td>
 		          </tr>
 		        </tbody>
       		</table>
@@ -69,16 +69,13 @@
               Show Acording to:
               <div class="btn-group">
                   <button type="button" class="btn btn-default" id="chromosome-no">Bar Chart</button>
-                  <button type="button" class="btn btn-default" id="gene-symbol">Pie Chart</button>
+                  <button type="button" class="btn btn-default" id="gene-symbol">Line Chart</button>
                   <button type="button" class="btn btn-default" id="strand">Both</button>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12" id="responder-chart-1"  style="overflow-x:scroll !important;"></div>
-          </div>
-          <div class="row">
-            <div class="col-md-12" id="responder-chart-2"></div>
           </div>
           
           </div>

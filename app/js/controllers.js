@@ -8,7 +8,7 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
 
 .controller('DashboardCtrl',function($scope,$http,D3Service,PatientOne){
 
-  PatientOne.then(function(data){
+    PatientOne.then(function(data){
     console.log(data);
     $scope.patientInfo = data;
     //adding events and timeline to sections
@@ -381,12 +381,27 @@ console.log(exprespmod);
 
     })
 
+    var lineFun = d3.svg.line()
+    .x(function(d,i){ return i*(w/exrespana.length)+((w/exrespana.length)/2)})
+    .y(function(d){ return h-yScale(d.value);})
+    .interpolate("linear"); 
+
+    var viz = d3.select("#responder-chart-1").select("svg").append("path").attr("transform","translate("+(margin.left)+","+(margin.top)+")")
+    .attr({
+      d:lineFun(exrespana), 
+      "stroke":"purple",
+      "stroke-width":2,
+      "fill":"none",
+    });
+
   }
   expRespAnalysisBar();
 
-  function  expRespAnalysisPie() {
+  function  expRespAnalysisLine() {
     
   }
+
+  expRespAnalysisLine();
 
 
 })//then brackets
