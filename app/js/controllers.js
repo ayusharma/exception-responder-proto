@@ -8,7 +8,7 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
 
 .controller('DashboardCtrlMul',function($scope,PatientOne,PatientTwo,PatientThree,PatientFour,PatientFive,ExpRespOne,ExpRespTwo,ExpRespThree,ExpRespFour,ExpRespFive){
   var datap1,datap2,datap3,datap4,datap5,exp1,exp2,exp3,exp4,exp5,fdata;
-   PatientOne.then(function(data){
+  PatientOne.then(function(data){
     datap1 = data;
   })
   PatientTwo.then(function(data){
@@ -18,8 +18,8 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
    datap3 = data;
  })
   PatientFour.then(function(data){
-  datap4 = data;
- })
+    datap4 = data;
+  })
   PatientFive.then(function(data){
    datap5 = data;
 
@@ -47,25 +47,25 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
 
    
 
-    function d3Draw (data){
+  function d3Draw (data){
 
-      var margin = {top:20,bottom:20,left:10,right:10};
-      var width = 1240 - margin.left - margin.right;
-      var height = 150 - margin.top - margin.bottom;;
-      var dnaStartEndPosition = [];
-      var geneSymbol = [];
-      var chromosomeno = [];
+    var margin = {top:20,bottom:20,left:10,right:10};
+    var width = 1240 - margin.left - margin.right;
+    var height = 150 - margin.top - margin.bottom;;
+    var dnaStartEndPosition = [];
+    var geneSymbol = [];
+    var chromosomeno = [];
 
 
 
-        for (var i = 0; i < data.genomicProfileList.length; i++) {
-          for (var j = 0; j < data.genomicProfileList[i].mutationList.length; j++) {
-            geneSymbol.push(data.genomicProfileList[i].mutationList[j].geneSymbol);
-            chromosomeno.push(data.genomicProfileList[i].mutationList[j].chromosome.substring(3,5));
-            dnaStartEndPosition.push(data.genomicProfileList[i].mutationList[j].dnaStartPosition);
-            dnaStartEndPosition.push(data.genomicProfileList[i].mutationList[j].dnaEndPosition);
-          };
-        };
+    for (var i = 0; i < data.genomicProfileList.length; i++) {
+      for (var j = 0; j < data.genomicProfileList[i].mutationList.length; j++) {
+        geneSymbol.push(data.genomicProfileList[i].mutationList[j].geneSymbol);
+        chromosomeno.push(data.genomicProfileList[i].mutationList[j].chromosome.substring(3,5));
+        dnaStartEndPosition.push(data.genomicProfileList[i].mutationList[j].dnaStartPosition);
+        dnaStartEndPosition.push(data.genomicProfileList[i].mutationList[j].dnaEndPosition);
+      };
+    };
 
       //function to get a unique value from array
       function unique(m){
@@ -116,8 +116,7 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
 
       geneSymbol = unique(geneSymbol);
       chromosomeno = unique(chromosomeno);
-      console.log(geneSymbol);
-      console.log(chromosomeno);
+      
 
      //gene selector
      d3.select("#gene-selector").selectAll("option").data(geneSymbol).enter()
@@ -144,7 +143,6 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
         var panel = '<div class="alert alert-info alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong id="panel-det"></div>'
         var details = 'Chromosome: '+obAnalyticDet.chromosome.substring(3,5)+'<br>Gene Symbol: '+obAnalyticDet.geneSymbol+'<br>Reference Genome: '+obAnalyticDet.referenceGenome+'<br>Enterez Gene Id: '+obAnalyticDet.entrezGeneId+'<br>Dna Start & End Position: '+obAnalyticDet.dnaStartPosition+', '+obAnalyticDet.dnaEndPosition+'<br>Strand: '+obAnalyticDet.strand+'<br>Variant Classification: '+obAnalyticDet.variantClassification+'<br>Alternative & Reference Allele Reads: '+obAnalyticDet.alternativeAlleleReads+', '+obAnalyticDet.referenceAlleleReads
         
-        console.log("this is analytic details function");
         d3.select("#analytic-result").append("div").html(panel).select("#panel-det").html(details);
       }
 
@@ -270,7 +268,6 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
       //function to upadate the bar list
       function drawBarUpdate(ob){
         var width = ob.width;
-        console.log(ob);
         d3.select(".bar-rect-"+ob.k).selectAll("rect").data(data.genomicProfileList[ob.k].mutationList)
         .attr({
           width:width-5,
@@ -338,7 +335,6 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
 
       d3.select("#gene-selector").on("change",function(d,i){
         var sel = d3.select(this).node().value;
-        console.log(sel);
         geneSelector(sel);
         
       });
@@ -346,7 +342,6 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
 
       d3.select("#chromosome-selector").on("change",function(d,i){
         var sel = d3.select(this).node().value;
-        console.log(sel);
         chromosomeSelector(sel);
         
       });
@@ -389,11 +384,11 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
 
       });
 
-  
-}
+      
+    }
 
 
-  function removeSvg(){
+    function removeSvg(){
       d3.select("#biopsy-result").selectAll("#chart svg").remove();
       d3.select("#biopsy-result").selectAll("option").remove();
     }
@@ -456,15 +451,14 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
       var data = exp5;
       d3Draw(data);
     }
- })
-  
+  })
+
 
 })
 
 .controller('DashboardCtrl',function($scope,$http,D3Service,PatientOne){
 
   PatientOne.then(function(data){
-    console.log(data);
     $scope.patientInfo = data;
     //adding events and timeline to sections
     var events = []; var sections = [];
@@ -549,14 +543,11 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
 
  }).then(function(){
   $scope.method.datastatus = 'Patient Data Has Been Loaded';
-  console.log($scope.method.patients);
   var events = []; var sections = [];
 
 
   function timeline(patientData){
-    // console.log(patientData);
     for (var i = 0; i < patientData.length; i++) {  
-      // console.log(patientData);
       for(var j=0; j< patientData[i].treatmentList.length; j++){
         $scope.startDay = patientData[i].treatmentList[j].startDate.substring(4,6);
         $scope.startMonth = new Date(patientData[i].treatmentList[j].startDate.substring(0,4)+'-1-01').getMonth();
@@ -596,11 +587,11 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
 //d3 section 
 
   //tooltip on hover
-     var tooltip = d3.select("body .container-fluid").append("div").attr("class","tooltip")
-     .style("position","absolute")
-     .style("padding","0 10px")
-     .style("background","white")
-     .style("opacity",0);
+  var tooltip = d3.select("body .container-fluid").append("div").attr("class","tooltip")
+  .style("position","absolute")
+  .style("padding","0 10px")
+  .style("background","white")
+  .style("opacity",0);
   //function to get present genes in the patient
   $scope.method.unique = function(m){
     var prev = m[0];
@@ -724,7 +715,7 @@ for (var i = 0; i < $scope.method.expresp.length; i++) {
     d3.select("#patient-graph-section-one svg").append("g").attr("transform","translate("+(margin.left+100)+","+(margin.top+100)+")")
     .selectAll("circle").data(patientgeneinfo[k].gene).enter().append("circle").attr({
       cx:k*100,
-      cy:function(d,i){ console.log(d);return i*30; },
+      cy:function(d,i){ return i*30; },
       r:r,
       "fill":function(d){
         if(d.status == "P"){
@@ -735,17 +726,16 @@ for (var i = 0; i < $scope.method.expresp.length; i++) {
       }
     })
     .on("mouseover",function(d){
-            d3.select(this).style("opacity",".8");
-            tooltip.style("opacity","1")
-            // console.log(d)
-            tooltip.html(d.gene)
-            .style("left",(d3.event.pageX)+"px")
-            .style("top",(d3.event.pageY)-15+"px")
-        })
-        .on("mouseout",function(d){
-            d3.select(this).style("opacity","1");
-            tooltip.style("opacity","0")
-        });
+      d3.select(this).style("opacity",".8");
+      tooltip.style("opacity","1")
+      tooltip.html(d.gene)
+      .style("left",(d3.event.pageX)+"px")
+      .style("top",(d3.event.pageY)-15+"px")
+    })
+    .on("mouseout",function(d){
+      d3.select(this).style("opacity","1");
+      tooltip.style("opacity","0")
+    });
   }
   // exp responder
 
@@ -778,17 +768,16 @@ for (var i = 0; i < $scope.method.expresp.length; i++) {
       }
     })
     .on("mouseover",function(d){
-            d3.select(this).style("opacity",".8");
-            tooltip.style("opacity","1")
-            // console.log(d)
-            tooltip.html(d.gene)
-            .style("left",(d3.event.pageX)+"px")
-            .style("top",(d3.event.pageY)-15+"px")
-        })
-        .on("mouseout",function(d){
-            d3.select(this).style("opacity","1");
-            tooltip.style("opacity","0")
-        });
+      d3.select(this).style("opacity",".8");
+      tooltip.style("opacity","1")
+      tooltip.html(d.gene)
+      .style("left",(d3.event.pageX)+"px")
+      .style("top",(d3.event.pageY)-15+"px")
+    })
+    .on("mouseout",function(d){
+      d3.select(this).style("opacity","1");
+      tooltip.style("opacity","0")
+    });
   }
   //calling visulization functions
   for (var k = 0; k < $scope.method.patients.length; k++) {
@@ -835,17 +824,16 @@ for (var i = 0; i < $scope.method.expresp.length; i++) {
       height:function(d,i){ return yScale(d.value);}
     }).style("fill","#4E8AD9")
     .on("mouseover",function(d){
-            d3.select(this).style("opacity",".8");
-            tooltip.style("opacity","1")
-            // console.log(d)
-            tooltip.html(d.value)
-            .style("left",(d3.event.pageX)+"px")
-            .style("top",(d3.event.pageY)-15+"px")
-        })
-        .on("mouseout",function(d){
-            d3.select(this).style("opacity","1");
-            tooltip.style("opacity","0")
-        });
+      d3.select(this).style("opacity",".8");
+      tooltip.style("opacity","1")
+      tooltip.html(d.value)
+      .style("left",(d3.event.pageX)+"px")
+      .style("top",(d3.event.pageY)-15+"px")
+    })
+    .on("mouseout",function(d){
+      d3.select(this).style("opacity","1");
+      tooltip.style("opacity","0")
+    });
 
     var yScaleAxis = d3.scale.linear()
     .domain([0,d3.max(exrespana,function(d){ return d.value;})])
@@ -935,7 +923,7 @@ function patientVal(selectedPatient){
   }
   return patientvalue;
 }
-console.log(patientVal(3));
+
 //function to get the exceptional responder values
 function exprespVal () {
   var exprespval = 0;
