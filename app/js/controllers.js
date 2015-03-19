@@ -428,7 +428,6 @@ d3.select(" #biopsy-result #biopsy-section svg").append("g").attr("class","bar-t
       removeSvg();
       var data = datap5;
       d3Draw(data);
-      timelineDraw (data);
     }
     $scope.expr1 = function(){
       removeSvg();
