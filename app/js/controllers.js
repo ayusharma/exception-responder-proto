@@ -941,10 +941,27 @@ function exprespVal () {
 
 //survival rate of patients
 $scope.method.survivalrate = [];
-for (var i = 0; i < $scope.method.patients.length; i++) {
-  var cal = (((patientVal(i)/exprespVal())*100).toFixed(2));
-  $scope.method.survivalrate.push(cal);
-}
+var cal;
+// for (var i = 0; i < $scope.method.patients.length; i++) {
+//   var cal = (((patientVal(i)/exprespVal())*100).toFixed(2));
+//   $scope.method.survivalrate.push(cal);
+// }
+cal = (((patientVal(0)/exprespVal())*100).toFixed(2));
+$scope.method.survivalrate.push(cal);
+
+cal = (((patientVal(1)/exprespVal())*100).toFixed(2));
+$scope.method.survivalrate.push(cal);
+
+cal = (((patientVal(2)/exprespVal())*100).toFixed(2));
+$scope.method.survivalrate.push(cal);
+
+cal = (((patientVal(3)/exprespVal())*100).toFixed(2));
+$scope.method.survivalrate.push(cal);
+
+cal = (((patientVal(4)/exprespVal())*100).toFixed(2));
+$scope.method.survivalrate.push(cal);
+
+
 
 //putting progressbar values
 
