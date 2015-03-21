@@ -14,5 +14,9 @@ onco.config(function($routeProvider){
 		controller:'MultCtrl',
 		templateUrl:'templates/view2.html'
 	})
+	.when('/insdel',{
+		controller:'InsDelCtrl',
+		templateUrl:'templates/insdel.html'
+	})
 
 });

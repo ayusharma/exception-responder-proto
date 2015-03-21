@@ -6,6 +6,10 @@ var onco = angular.module('onco',['ngRoute','ui.bootstrap','angular-loading-bar'
 
 })
 
+.controller('InsDelCtrl',function($scope,D3ServiceInsDel){
+  console.log("InsDelCtrl");
+})
+
 .controller('DashboardCtrlMul',function($scope,PatientOne,PatientTwo,PatientThree,PatientFour,PatientFive,ExpRespOne,ExpRespTwo,ExpRespThree,ExpRespFour,ExpRespFive){
   var datap1,datap2,datap3,datap4,datap5,exp1,exp2,exp3,exp4,exp5,fdata;
   PatientOne.then(function(data){
