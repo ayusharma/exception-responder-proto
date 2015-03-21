@@ -3,7 +3,7 @@ onco.factory('PatientOne', function($http,$q){
 
   $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){ def.resolve(data)})
   .error(function(error){
-    console.log(error);
+    alert("error: Data is not getting load from API");
   })
 
 return def.promise;
@@ -14,7 +14,7 @@ onco.factory('PatientTwo', function($http,$q){
 
   $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){ def.resolve(data)})
   .error(function(error){
-    console.log(error);
+    alert("error: Data is not getting load from API");
   })
 
 return def.promise;
@@ -25,7 +25,7 @@ onco.factory('PatientThree', function($http,$q){
 
   $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){ def.resolve(data)})
   .error(function(error){
-    console.log(error);
+    alert("error: Data is not getting load from API");
   })
 
 return def.promise;
@@ -36,7 +36,7 @@ onco.factory('PatientFour', function($http,$q){
 
   $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){ def.resolve(data)})
   .error(function(error){
-    console.log(error);
+    alert("error: Data is not getting load from API");
   })
 
 return def.promise;
@@ -47,7 +47,7 @@ onco.factory('PatientFive', function($http,$q){
 
   $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){ def.resolve(data)})
   .error(function(error){
-    console.log(error);
+    alert("error: Data is not getting load from API");
   })
 
 return def.promise;
@@ -58,7 +58,7 @@ onco.factory('ExpRespOne', function($http,$q){
 
   $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){ def.resolve(data)})
   .error(function(error){
-    console.log(error);
+    alert("error: Data is not getting load from API");
   })
 
 return def.promise;
@@ -69,7 +69,7 @@ onco.factory('ExpRespTwo', function($http,$q){
 
   $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){ def.resolve(data)})
   .error(function(error){
-    console.log(error);
+    alert("error: Data is not getting load from API");
   })
 
 return def.promise;
@@ -80,7 +80,7 @@ onco.factory('ExpRespThree', function($http,$q){
 
   $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){ def.resolve(data)})
   .error(function(error){
-    console.log(error);
+    alert("error: Data is not getting load from API");
   })
 
 return def.promise;
@@ -91,7 +91,7 @@ onco.factory('ExpRespFour', function($http,$q){
 
   $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){ def.resolve(data)})
   .error(function(error){
-    console.log(error);
+    alert("error: Data is not getting load from API");
   })
 
 return def.promise;
@@ -102,7 +102,7 @@ onco.factory('ExpRespFive', function($http,$q){
 
   $http({method: 'GET', url: 'http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle'}).success(function(data){ def.resolve(data)})
   .error(function(error){
-    console.log(error);
+    alert("error: Data is not getting load from API");
   })
 
 return def.promise;
