@@ -112,9 +112,10 @@ onco.factory('D3ServiceInsDel', function(){
 			.selectAll("path").data(pie(dataset)).enter().append("g")
 			.attr("class","slice")
 			.on("mouseover",function(d){
+				console.log(d);
 				d3.select(this).style("opacity",".8");
 				tooltip.style("opacity","1")
-				tooltip.html("<b>Name: "+d.name+" Value: "+d.value+"</b>")
+				tooltip.html("<b>Name: "+d.data.name+" Value: "+d.value+"</b>")
 				.style("left",(d3.event.pageX)+"px")
 				.style("top",(d3.event.pageY)-15+"px")
 			})
