@@ -2,11 +2,11 @@
 
 onco.config(function($routeProvider){
 	$routeProvider
-	// .when('/',{
-	// 	controller:'HomeCtrl',
-	// 	template:'<h1>Home Page</h1>'
-	// })
 	.when('/',{
+		controller:'HomeCtrl',
+		templateUrl:'templates/home.html'
+	})
+	.when('/singlepatient',{
 		controller:'DashboardCtrl',
 		templateUrl:'templates/dash.html'
 	})
@@ -18,5 +18,12 @@ onco.config(function($routeProvider){
 		controller:'InsDelCtrl',
 		templateUrl:'templates/insdel.html'
 	})
+	.when('/video',{
+		controller:'InsDelCtrl',
+		templateUrl:'templates/video.html'
+	})
+	.otherwise({
+        redirectTo: '/'
+      });
 
 });
