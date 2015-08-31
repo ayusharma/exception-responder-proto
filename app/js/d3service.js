@@ -10,7 +10,7 @@ onco.factory('D3Service', function(){
     var chromosomeno = [];
 
 
-    d3.json("http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle",function  (data) {
+    d3.json("webservice2.json",function  (data) {
 
       for (var i = 0; i < data.genomicProfileList.length; i++) {
         for (var j = 0; j < data.genomicProfileList[i].mutationList.length; j++) {
