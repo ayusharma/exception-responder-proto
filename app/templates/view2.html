@@ -1,4 +1,26 @@
 <div class="row">
+  <div class="col-md-12">
+    <div class="separator"></div>
+    <div class="panel panel-default">
+  <!-- Default panel contents -->
+      <div class="panel-heading"><b>Patients Information</b></div>
+      <div class="panel-body">
+        <h5>Select one or multiple files:</h5>
+        <div class="row">
+          <div class="col-md-12">
+           <input type="file" id="fileUpSingleMulti" multiple/>
+          </div>
+          <div class="col-md-12">
+            <div class="separator"></div>
+            <button class="btn btn-info btn-block" ng-click="singlePatientlabreportMulti()">Upload</button>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" ng-if="method.multidashboard">
     <div class="col-md-12">
         <div class="separator"></div>
         <div class="panel panel-default">
@@ -31,7 +53,7 @@
 		  </div>
 		</div>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12" style="display:none;">
         <div class="separator"></div>
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -52,7 +74,7 @@
           <div class="panel-body">
           <div class="col-md-6" id="patient-graph-section-one" style="overflow-x:scroll !important;"></div>
           <div class="col-md-6" id="patient-graph-section-two" style="overflow-x:scroll !important;"></div>
-            
+
           </div>
         </div>
     </div>
@@ -76,7 +98,7 @@
           <div class="row">
             <div class="col-md-12" id="responder-chart-1"  style="overflow-x:scroll !important;"></div>
           </div>
-          
+
           </div>
         </div>
     </div>
@@ -88,7 +110,7 @@
             <h3 class="panel-title">Advanced Analytic Section(According to entities)</h3>
           </div>
           <div class="panel-body">
-              <single-patient></single-patient>
+              <single-patient patientData="{{method.patients}}" exprespData="{{method.expresp}}"></single-patient>
           </div>
         </div>
     </div>
@@ -99,7 +121,7 @@
             <h3 class="panel-title">How this Works</h3>
           </div>
           <div class="panel-body">
-              <p>This prototype hadles the data from <a href="http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle">http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle</a> and make it easy to mine the data. You can see the time line of the patient and explore it's data with relevant sections.<p>
+              <p>This prototype hadles test data of cancer biopsies and make it easy to mine the data. You can see the time line of the patient and explore it's data with relevant sections.<p>
               <p><b>Patient Information:</b>This section shows the information of the selected patients.
               <p><b>Survival Rate:</b>Survival rate has been calculated with respect to exception responders.</p>
               <p><b>Treatment Timeline:</b>All the selected patient indicated on the timeline using chronoline.js</p>
@@ -109,18 +131,6 @@
               <p><b>Respond Scale of Exceptional Responder (in percentage)</b>The percengae of muted genes is calculated from the set of exceptional resonders which helped in the calculation of survival rate.</p>
             <p><b>Advanced Analytic Section(According to entities)</b>Here you can deeply look through the data of each and every entity to clear the ambiguious situations.</p>
             <p><b>Technical Specification</b>AngularJS, D3JS and Git</p>
-          </div>
-        </div>
-    </div>
-
-    <div class="col-md-12">
-        <div class="separator"></div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Find this on Github</h3>
-          </div>
-          <div class="panel-body">
-             <a href="https://github.com/ayusharma/exception-responder-proto">Github</a>
           </div>
         </div>
     </div>

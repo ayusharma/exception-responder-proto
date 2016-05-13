@@ -1,4 +1,4 @@
-// chronoline.js v0.1.1
+// chronoline.js v0.1.3
 // by Kevin Leung for Zanbato, https://zanbato.com
 // MIT license at https://github.com/StoicLoofah/chronoline.js/blob/master/LICENSE.md
 
@@ -130,8 +130,19 @@ function forwardWeek(date){
 }
 
 function Chronoline(domElement, events, options) {
-    this.VERSION = "0.1.1";
-
+    var t = this;
+    t.VERSION = "0.1.3";
+    
+    //sanitize Chronoline parameters
+    //initilize events to emplty arry if null
+    //set optons to empty object if null
+    //thow exception if domElement is not set
+    function paramVal(){
+        events = events != null ? events : [];
+        options = options != null ? options : {};
+        if(domElement == null) throw "Dom element not defined.";
+    }
+    
     var defaults = {
         defaultStartDate: null,  // the date furthest to the left on load. Defaults to today
         startDate: null,  // start of the timeline. Defaults to first event date
@@ -186,7 +197,7 @@ function Chronoline(domElement, events, options) {
         markToday: 'line',  // 'line', 'labelBox', false
         todayAttrs: {'stroke': '#484848'},
 
-        sections: null,
+        sections: [],
         floatingSectionLabels: true,
         sectionLabelAttrs: {},
         sectionLabelsOnHover: true,
@@ -195,109 +206,101 @@ function Chronoline(domElement, events, options) {
 
         continuousScroll: true,  // requires that scrollable be true, click-and-hold arrows
         continuousScrollSpeed: 1,  // I believe this is px/s of scroll. There is no easing in it
+        eventClick: null, // called when user clicks on event, function(data)
+        eventDblClick: null, // called when user double clicks on event, function(data)
+        sectionClick: null, // called when user clicks on a section, function(data, date)
+        sectionDblClick: null, // called when user double clicks on a section, function(data, date)
+        backgroundClick: null, // called when user clicks the background, function(date)
+        backgroundDblClick: null // called when user double clicks on the background, function(date)
     };
-    var t = this;
+    
+    //apply the default values and options to the t object
+    // this method should only be called once at initial initilization
+    // initilizes any required attributes that do not need to be recreated by refresh function
+    function setAttrDefaults(){
+        // FILL DEFAULTS
+        for(var attrname in defaults){ t[attrname] = defaults[attrname];}
+        for(var attrname in options){ t[attrname] = options[attrname];}
+        
+        // this is hacky, but necessary for backwards-compability
+        t.originalStartDate = t.startDate;
+        t.originalEndDate = t.endDate;
+        t.originalDefaultStartDate = t.defaultStartDate;
+        
+        // HTML elements to put everything in
+        t.domElement = domElement;
 
-    // FILL DEFAULTS
-    for(var attrname in defaults){ t[attrname] = defaults[attrname];}
-    for(var attrname in options){ t[attrname] = options[attrname];}
+        t.wrapper = document.createElement('div');
+        t.wrapper.className = 'chronoline-wrapper';
+        t.domElement.appendChild(t.wrapper);
+        
+        t.events = events;
+        
+         // generating relevant dates
+        t.today = new Date(Date.now());
+        t.today.stripTime();
 
-    // options shouldn't be on if there aren't any sections
-    t.floatingSectionLabels &= t.sections !== null;
-    t.sectionLabelsOnHover &= t.sections !== null;
-
-    // this is hacky, but necessary for backwards-compability
-    t.originalStartDate = t.startDate;
-    t.originalEndDate = t.endDate;
-    t.originalDefaultStartDate = t.defaultStartDate;
-
-    // HTML elements to put everything in
-    t.domElement = domElement;
-
-    t.wrapper = document.createElement('div');
-    t.wrapper.className = 'chronoline-wrapper';
-    t.domElement.appendChild(t.wrapper);
-
-    // SORT EVENTS
-    t.sortEvents = function(a, b){
-        a = a.dates;
-        b = b.dates;
-
-        var aEnd = a[a.length - 1].getTime();
-        var bEnd = b[b.length - 1].getTime();
-        if(aEnd != bEnd){
-            return aEnd - bEnd;
-        }
-        return a[0].getTime() - b[0].getTime();
-    };
-
-    // need to toss the time variance bits
-    for(var i = 0; i < events.length; i++){
-        for(var j = 0; j < events[i].dates.length; j++){
-            events[i].dates[j] = new Date(events[i].dates[j].getTime());
-            events[i].dates[j].stripTime();
+        //init default start date to today if not initilized
+        if(t.defaultStartDate === null){
+            t.defaultStartDate = t.today;
         }
     }
-    t.events = events;
-    t.events.sort(t.sortEvents);
-
-    // same thing for sections
-    if(t.sections !== null){
+    
+    //Sanitizes and validates attributes.
+    //called before initial init and during refresh to re-sanitize because some properties may have been changed.
+    //Called after attribute defaults are set
+    function preInit(){
+        
+        t.events = t.events === null ? [] : t.events;
+        // need to toss the time variance bits
+        for(var i = 0; i < t.events.length; i++){
+            for(var j = 0; j < t.events[i].dates.length; j++){
+                t.events[i].dates[j] = new Date(Date.parse(t.events[i].dates[j]));
+                t.events[i].dates[j].stripTime();
+            }
+        }
+        t.events.sort(t.sortEvents);
+        
+        
+        t.sections = t.sections === null ? [] : t.sections;
+        // options shouldn't be on if there aren't any sections
+        t.floatingSectionLabels &= t.sections.length !== 0;
+        t.sectionLabelsOnHover &= t.sections.length !== 0;
+        // same thing for sections
         for(var i = 0; i < t.sections.length; i++){
             for(var j = 0; j < t.sections[i].dates.length; j++){
-                t.sections[i].dates[j] = new Date(t.sections[i].dates[j].getTime());
+                t.sections[i].dates[j] = new Date(Date.parse(t.sections[i].dates[j]));
                 t.sections[i].dates[j].stripTime();
             }
         }
         t.sections.sort(t.sortEvents);
+        
+        
+        t.drawnStartMs = null;
+        t.drawnEndMs = null;
+        
+        t.isMoving = false;
     }
-
-    // 2 handy utility functions
-    t.pxToMs = function(px){
-        return t.startTime + px / t.pxRatio;
-    };
-    t.msToPx = function(ms){
-        return (ms - t.startTime) * t.pxRatio;
-    };
-
-    t.resize = function(visibleSpan) {
-        // useful for zooming
-        t.visibleSpan = visibleSpan;
-        t.init();
-    };
-
-    t.zoom = function(zoomFactor) {
-        t.resize(t.visibleSpan / zoomFactor);
-    };
 
     t.init = function() {
         // CALCULATING MORE THINGS
-        // generating relevant dates
-        t.today = new Date(Date.now());
-        t.today.stripTime();
-
-        t.startDate = t.originalStartDate;
-        t.endDate = t.originalEndDate;
-        t.defaultStartDate = t.originalDefaultStartDate;
-
-        if(t.defaultStartDate === null){
-            t.defaultStartDate = t.today;
-        }
+       
 
         if(t.startDate === null){
             if(t.events.length > 0){
-                t.startDate = t.events[0].dates[0];
+                t.startDate = new Date(Date.parse(t.events[0].dates[0]));
                 for(var i = 1; i < t.events.length; i++)
                     if(t.events[i].dates[0] < t.startDate)
-                        t.startDate = t.events[i].dates[0];
+                        t.startDate = new Date(Date.parse(t.events[i].dates[0]));
             } else if(t.sections.length > 0) {
-                t.startDate = t.sections[0].dates[0];
+                t.startDate = new Date(Date.parse(t.sections[0].dates[0]));
                 for(var i = 0; i < t.sections.length; i++){
                     if(t.sections[i].dates[0] < t.startDate)
-                        t.startDate = t.sections[i].dates[0];
+                        t.startDate = new Date(Date.parse(t.sections[i].dates[0]));
                 }
-            } else {
-                return;
+            } else {// default to default start date if no events or sections defined
+                //returning here stops the canvas from being initilized
+                t.startDate = t.defaultStartDate;
             }
         }
         t.startDate.stripTime();
@@ -314,13 +317,14 @@ function Chronoline(domElement, events, options) {
                     if(getEndDate(t.events[i].dates) > t.endDate)
                         t.endDate = getEndDate(t.events[i].dates);
             } else if(t.sections.length > 0) {
-                t.endDate = t.sections[0].dates[1];
+                t.endDate = Date.parse(t.sections[0].dates[1]);
                 for(var i = 0; i < t.sections.length; i++){
                     if(t.sections[i].dates[1] > t.endDate)
-                        t.endDate = t.sections[i].dates[1];
+                        t.endDate = Date.parse(t.sections[i].dates[1]);
                 }
-            } else {
-                return;
+            } else {// default to default start date if no events or sections defined
+                //returning here stops the canvas from being initilized
+                t.endDate = t.defaultStartDate;
             }
         }
         if(t.endDate < t.defaultStartDate) {
@@ -377,10 +381,15 @@ function Chronoline(domElement, events, options) {
         t.totalHeight = t.dateLabelHeight + t.eventsHeight + t.topMargin;
 
         // creating canvas pieces
-        if(t.myCanvas) {
-            // destroy the old one
-            t.wrapper.removeChild(t.myCanvas);
+        //remove right control from wrapper if  exists
+        if (t.myCanvas && t.wrapper.hasChildNodes()) {
+            for(i = t.wrapper.childNodes.length - 1;i >=0;i--)
+                if(t.wrapper.childNodes[i] === t.myCanvas){
+                    t.wrapper.removeChild(t.myCanvas);
+                    break;
+                }
         }
+        
         t.myCanvas = document.createElement('div');
         t.myCanvas.className = 'chronoline-canvas';
         t.wrapper.appendChild(t.myCanvas);
@@ -392,6 +401,30 @@ function Chronoline(domElement, events, options) {
         // DRAWING
         t.floatingSet = t.paper.set();
         t.sectionLabelSet = t.paper.set();
+
+        //attach background click events function
+        if (t.backgroundClick) {
+            t.myCanvas.onclick = function(e) {
+                //if not event or section click.
+                if (e.target.nodeName != 'circle' && e.target.nodeName != 'rect') {
+                    var clickDate = new Date(t.pxToMs(e.clientX));
+                    clickDate.stripTime();
+                    t.backgroundClick(clickDate);
+                }
+            }
+        }
+        //attach background double click events function
+        if (t.backgroundDblClick) {
+            t.myCanvas.ondblclick = function(e) {
+                //if not event or section click.
+                if (e.target.nodeName != 'circle' && e.target.nodeName != 'rect') {
+                    var clickDate = new Date(t.pxToMs(e.clientX));
+                    clickDate.stripTime();
+                    t.backgroundDblClick(clickDate);
+                }
+            }
+        }
+
         // drawing sections
         if(t.sections !== null){
             for(var i = 0; i < t.sections.length; i++){
@@ -399,6 +432,26 @@ function Chronoline(domElement, events, options) {
                 var startX = (section.dates[0].getTime() - t.startTime) * t.pxRatio;
                 var width = (section.dates[1] - section.dates[0]) * t.pxRatio;
                 var elem = t.paper.rect(startX, 0, width, t.totalHeight);
+                if (t.sectionClick || t.sectionDblClick) {
+                    elem.data('sectionData', section);
+                }
+                if (t.sectionClick) {
+                    elem.click(function(e) {
+                        e.preventDefault();
+                        var clickDate = new Date(t.pxToMs(e.clientX));
+                        clickDate.stripTime();
+                        t.sectionClick(this.data('sectionData'), clickDate);
+                    });
+                }
+                if (t.sectionDblClick) {
+                    elem.dblclick(function (e) {
+                        e.preventDefault();
+                        var clickDate = new Date(t.pxToMs(e.clientX));
+                        clickDate.stripTime();
+                        t.sectionDblClick(this.data('sectionData'), clickDate);
+                    });
+                }
+                addElemClass(t.paperType, elem.node, 'chronoline-section');
                 elem.attr('stroke-width', 0);
                 elem.attr('stroke', '#ffffff');
                 if(typeof section.attrs != "undefined"){
@@ -441,7 +494,8 @@ function Chronoline(domElement, events, options) {
                 var startX = (myEvent.dates[0].getTime() - t.startTime) * t.pxRatio;
                 var elem = null;
                 if(myEvent.dates.length == 1){  // it's a single point
-                    elem = t.paper.circle(startX, upperY + t.circleRadius, t.circleRadius).attr(t.eventAttrs);
+                    elem = t.paper.circle(startX, upperY + t.circleRadius, t.circleRadius)
+                        .attr(t.eventAttrs);
                 } else {  // it's a range
                     var width = (getEndDate(myEvent.dates) - myEvent.dates[0]) * t.pxRatio;
                     // left rounded corner
@@ -456,9 +510,24 @@ function Chronoline(domElement, events, options) {
                         rightCircle.attr(myEvent.attrs);
                     }
                     addElemClass(t.paperType, rightCircle.node, 'chronoline-event');
-                    elem = t.paper.rect(startX, upperY, width, t.eventHeight).attr(t.eventAttrs);
+                    elem = t.paper.rect(startX, upperY, width, t.eventHeight)
+                        .attr(t.eventAttrs);
                 }
-
+                if (t.eventClick || t.eventDblClick) {
+                    elem.data("eventData", myEvent);
+                }
+                if (t.eventClick) {
+                    elem.click(function(e) {
+                        e.preventDefault();
+                        t.eventClick(this.data("eventData"));
+                    });
+                }
+                if (t.eventDblClick) {
+                    elem.dblclick(function(e) {
+                        e.preventDefault();
+                        t.eventDblClick(this.data("eventData"));
+                    });
+                }
                 if(typeof myEvent.link != 'undefined') {
                     elem.data('link', myEvent.link);
                     elem.click(function(){
@@ -472,14 +541,16 @@ function Chronoline(domElement, events, options) {
                 addElemClass(t.paperType, elem.node, 'chronoline-event');
 
                 elem.attr('title', myEvent.title);
+                
                 if(t.tooltips){
                     var description = myEvent.description;
                     var title = myEvent.title;
+                    var $node = jQuery(elem.node);
                     if(typeof description == "undefined" || description === ''){
                         description = title;
                         title = '';
                     }
-                    var $node = jQuery(elem.node);
+                    
                     if(Raphael.type == 'SVG')
                         $node = $node.parent();
                     $node.qtip({
@@ -571,6 +642,39 @@ function Chronoline(domElement, events, options) {
         t.myCanvas.style.height = t.totalHeight + 'px';
     };
 
+    /***************************************************************************/
+    /***************** Helper functions ****************************************/
+    // SORT EVENTS
+    t.sortEvents = function(a, b){
+        a = a.dates;
+        b = b.dates;
+
+        var aEnd = a[a.length - 1].getTime();
+        var bEnd = b[b.length - 1].getTime();
+        if(aEnd != bEnd){
+            return aEnd - bEnd;
+        }
+        return a[0].getTime() - b[0].getTime();
+    };
+    
+    // 2 handy utility functions
+    t.pxToMs = function(px){
+        return t.startTime + px / t.pxRatio;
+    };
+    t.msToPx = function(ms){
+        return (ms - t.startTime) * t.pxRatio;
+    };
+
+    t.resize = function(visibleSpan) {
+        // useful for zooming
+        t.visibleSpan = visibleSpan;
+        t.init();
+    };
+
+    t.zoom = function(zoomFactor) {
+        t.resize(t.visibleSpan / zoomFactor);
+    };
+    
     t.drawLabelsHelper = function(startMs, endMs){
         for(var curMs = startMs; curMs < endMs; curMs += DAY_IN_MILLISECONDS){
             var curDate = new Date(curMs);
@@ -622,10 +726,7 @@ function Chronoline(domElement, events, options) {
             }
         }
     };
-
-
-    t.drawnStartMs = null;
-    t.drawnEndMs = null;
+    
     // this actually draws labels. It calculates the set of labels to draw in-between
     // what it currently has and needs to add
     t.drawLabels = function(leftPxPos){
@@ -662,7 +763,7 @@ function Chronoline(domElement, events, options) {
         }
     };
 
-    t.isMoving = false;
+    
     t.goToPx = function(finalLeft, isAnimated, isLabelsDrawn) {
         /*
           finalLeft is negative
@@ -770,8 +871,13 @@ function Chronoline(domElement, events, options) {
     };
 
     t.initScrollable = function(){
-        if(t.leftControl) {
-            t.wrapper.removeChild(t.leftControl);
+        //remove left control from wrapper if exists
+        if (t.leftControl && t.wrapper.hasChildNodes()) {
+            for(i = t.wrapper.childNodes.length - 1;i >=0;i--)
+                if(t.wrapper.childNodes[i] === t.leftControl){
+                    t.wrapper.removeChild(t.leftControl);
+                    break;
+                }
         }
         t.leftControl = document.createElement('div');
         t.leftControl.className = 'chronoline-left';
@@ -785,9 +891,14 @@ function Chronoline(domElement, events, options) {
                                      t.leftControl.clientHeight);
         t.leftControl.style.height =  controlHeight + 'px';
         leftIcon.style.marginTop = (controlHeight - 15) / 2 + 'px';
-
-        if(t.rightControl) {
-            t.wrapper.removeChild(t.rightControl);
+        
+        //remove right control from wrapper if  exists
+        if (t.rightControl && t.wrapper.hasChildNodes()) {
+            for(i = t.wrapper.childNodes.length - 1;i >=0;i--)
+                if(t.wrapper.childNodes[i] === t.rightControl){
+                    t.wrapper.removeChild(t.rightControl);
+                    break;
+                }
         }
         t.rightControl = document.createElement('div');
         t.rightControl.className = 'chronoline-right';
@@ -929,6 +1040,24 @@ function Chronoline(domElement, events, options) {
         // gets the time (ms) of the right edge of the visible area
         return Math.floor(t.startTime - (getLeft(t.paperElem) - t.visibleWidth) / t.pxRatio);
     };
-
-    t.init();
+    
+    
+    /*****************************************/
+    /****** actual Initilization ********************/
+    
+    //refresh the timeline
+    //sanitizes t attributes that may have been updated.
+    //calls init to redraw the canvas
+    t.refresh = function(){
+        preInit();
+        t.init();
+        return t;
+    };
+    
+    //intilize the control and return     
+    paramVal();//sanitize parameters
+    setAttrDefaults();//initilize t's attributes, sets default values
+    preInit();//sanitizes t's attributes
+    t.init();//initilize the timline canvas
+    return t;
 }

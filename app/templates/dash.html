@@ -1,5 +1,28 @@
 <div class="row">
     <div class="col-md-12">
+      <div class="separator"></div>
+      <div class="panel panel-default">
+		      <div class="panel-heading"><b>Enter Patient Information</b></div>
+    		  <div class="panel-body">
+            <div class="row">
+              <div class="col-md-6">
+                <textarea ng-model="singlePatient.textArea" ng-change="checktextArea()" style="width:100%;height:300px;"></textarea>
+              </div>
+              <div class="col-md-6">
+                <b>OR</b> Select lab report : <input type="file" id="fileUpSingle"/>
+              </div>
+              <div class="col-md-12">
+                <div class="separator"></div>
+                <button class="btn btn-info btn-block" ng-click="singlePatientlabreport()">Upload</button>
+              </div>
+            </div>
+    		  </div>
+		</div>
+    </div>
+</div>
+
+<div class="row" ng-show="dashboard">
+    <div class="col-md-12">
         <div class="separator"></div>
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -14,7 +37,7 @@
           </div>
         </div>
     </div>
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
         <div class="separator"></div>
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -24,7 +47,7 @@
             <div id="target2" class="timeline-tgt"></div>
           </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="col-md-12">
         <div class="separator"></div>
@@ -33,7 +56,7 @@
             <h3 class="panel-title">Filter Section</h3>
           </div>
           <div class="panel-body">
-          
+
             Select a gene: <select id="gene-selector"></select> <button id="clear" class="btn btn-info">Clear</button>
             <p><b>Result</b>: <span id="gene-selector-result"></span></p>
             <br>
@@ -71,29 +94,6 @@
           </div>
           <div class="panel-body" id="analytic-result">
               <b>Result:</b>
-          </div>
-        </div>
-    </div>
-    <div class="col-md-12">
-        <div class="separator"></div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">How this Works</h3>
-          </div>
-          <div class="panel-body">
-              This prototype hadles the data from <a href="http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle">http://104.236.9.88:8080/OncoBlocks/webservice.do?query=get_patient_bundle</a> and make it easy to mine the data. You can see the time line of the patient and explore it's data with relevant sections.
-          </div>
-        </div>
-    </div>
-
-    <div class="col-md-12">
-        <div class="separator"></div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Find this on Github</h3>
-          </div>
-          <div class="panel-body">
-             <a href="https://github.com/ayusharma/exception-responder-proto">Github</a>
           </div>
         </div>
     </div>
